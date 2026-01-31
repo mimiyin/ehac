@@ -55,20 +55,22 @@ function drift() {
 }
 
 function create() {
-  let c = flip ? 255 : 0;
+  let c = 255;
     let a = {
       pos: 0,
-      speed: random(0.01, 0.1) * 2
+      speed: distribute([{ min: 0.01, max: 0.02, weight: 1}, { min: 0.02, max: 0.05, weight: 10}, {min: 0.08, max: 0.1, weight: 5}]) // random(0.01, 0.1) * 2
     };
-    let t = {
+
+    console.log(a.speed);
+    let th = {
       pos: random(TWO_PI),
       speed: random(-0.001, 0.001)
     }
-    area = new Area(pos(), drift(), c, a, t);
+    area = new Area(pos(), drift(), c, a, th);
 }
 
 function draw() {
-  background(flip ? 255 : 0);
+  background(0);
 
   if (!area || area.off() || keyIsPressed) {
     create();
@@ -120,7 +122,7 @@ class Area {
     let y = sin(th) * r + this.cy;
     noStroke();
     fill('red');
-    //ellipse(x, y, 15, 15);
+    ellipse(x, y, 15, 15);
     return x < - M || x > width + M || y < - M || y > height + M;
   }
 
@@ -130,7 +132,7 @@ class Area {
     let br = this.corner(this.r.pos, this.b.pos);
     let bl = this.corner(this.l.pos, this.b.pos);
 
-    //console.log("OFF", tl, tr, br, bl);
+    console.log("OFF", tl, tr, br, bl);
     return (tl && tr && br && bl);
   }
 
