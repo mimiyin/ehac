@@ -8,7 +8,7 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   noCursor();
   cw = width/cols;
-  fill(255, 1);
+  
   stroke(0, 10);
 }
 
@@ -16,6 +16,7 @@ function draw() {
   background(0, 10);
   if(go) bx += bxspeed;
   for(let x = 0; x < bx; x++) {
+    fill(x % 2 == 0 ? 255 : 0, 1);
     rect(x, 0, cw, height);
   }
 }
