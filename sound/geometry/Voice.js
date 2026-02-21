@@ -1,5 +1,5 @@
 // Blues Scale Ratios
-let ratios = [1, 1.2, 1.34, 1.42, 1.5, 1.78];
+let ratios = [1, 1.125, 1.25, 1.34, 1.5, 1.67, 1.875, 2];
 
 class Voice {
   constructor(sound, beats, aspeed, col) {
@@ -10,42 +10,44 @@ class Voice {
     this.unmute = false;
     this.reset();
   }
-  
+
   reset() {
     this.t = random(360);
     this.b = 0;
-    this.beat = this.beats[this.b];    
+    this.beat = this.beats[this.b];
   }
 
   mute() {
     this.unmute = !this.unmute;
   }
-  
+
   rotate() {
-    for(let b in this.beats) {
+    for (let b in this.beats) {
       let beat = this.beats[b];
-      beat += this.aspeed;
+      beat += b*this.aspeed;
+      beat %= 360;
       this.beats[b] = beat;
     }
   }
-  
-  play(a) {    
-    if(abs(a - this.beat) < aspeed) {
-      this.t += 15;
-      let r = floor((sin(this.t) + 1) * ratios.length/2);
+
+  play(a) {
+    if (abs(a - this.beat) < aspeed) {
+      this.t += random(1) > 0.3 ? 1 : 10;
+      let r = floor((sin(this.t) + 1) * ratios.length / 2);
       let ratio = ratios[r];
       this.sound.rate(ratio);
-      if(this.unmute) this.sound.play();
+      if (this.unmute) this.sound.play();
       this.b++;
       this.b %= this.beats.length;
       this.beat = this.beats[this.b];
     }
   }
-  
+
   display() {
-    this.col.setAlpha(this.unmute ? 255 : 100);
+    this.col.setAlpha(this.unmute ? 255 : 16);
     fill(this.col);
-    for(let b in this.beats) {
+
+    for (let b in this.beats) {
       let beat = this.beats[b];
       let x = cos(beat) * r;
       let y = sin(beat) * r;

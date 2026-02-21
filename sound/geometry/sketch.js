@@ -34,10 +34,11 @@ function setup() {
   // Makes voices with following parameters:
   // soundfile, array of beats, max random rotation speed, color
   voices = [
-    new Voice(sounds[0], [0, 180], 0, "red"),
-    new Voice(sounds[1], [0, 90, 150], 0.15, "green"),
-    new Voice(sounds[1], [70, 130, 240], 0.1, 'blue'),
-    new Voice(sounds[5], [30, 200, 330], 0.2, 'turquoise'),
+    new Voice(sounds[0], [0, 180], 0, "white"),
+    new Voice(sounds[0], [0, 180], 0.02, "red"),
+    new Voice(sounds[1], [0, 120, 240], 0.05, "green"),
+    new Voice(sounds[1], [70, 130, 270], 0.02, 'blue'),
+    new Voice(sounds[5], [30, 200, 330], 0.05, 'turquoise'),
   ];
 }
 
