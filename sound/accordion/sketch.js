@@ -31,7 +31,7 @@ ratios = [1, 1.067, 1.125, 1.2, 1.25, 1.34, 1.42, 1.5, 1.6, 1.67, 1.78, 1.875, 2
 //ratios = [1, 1.067, 1.25, 1.34, 1.5, 1.6, 1.875, 2];
 
 // Base frequency
-let BASE = 300;
+let BASE = 380;
 
 function setup() {
   createCanvas(400, 400);
@@ -69,7 +69,7 @@ function keyPressed() {
 function play (note, key) {
     console.log("hello", key);
     let f = ratios[key] * 0.5; //random(ratios) * 0.5;
-    note.rate(f);
+    note.rate(f * 1.2);
     // Fade it in over 5 seconds
     note.setVolume(1, 10);
     note.loop();
