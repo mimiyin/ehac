@@ -6,13 +6,14 @@ let FULL_CIRCLE = 360;
 let r;
 let cx, cy;
 let a = 0;
-let aspeed = 10;
+let aspeed = 8;
 
 // Beats
+let v = 0;
 let voices = [];
 
 // Rotate?
-let rotate = false;
+let revolve = false;
 
 function preload() {
   // Load all the sounds
@@ -34,11 +35,11 @@ function setup() {
   // Makes voices with following parameters:
   // soundfile, array of beats, max random rotation speed, color
   voices = [
-    new Voice(sounds[0], [0, 180], 0, "white"),
-    new Voice(sounds[0], [0, 180], 0.02, "red"),
-    new Voice(sounds[1], [0, 120, 240], 0.05, "green"),
-    new Voice(sounds[1], [70, 130, 270], 0.02, 'blue'),
-    new Voice(sounds[5], [30, 200, 330], 0.05, 'turquoise'),
+    new Voice(sounds[0], SCALES.BLUES, 2, "rising", [0], 0.1, "orange"),
+    new Voice(sounds[0], SCALES.BLUES, 1, "falling", [180, 240], 0.01, "red"),
+    new Voice(sounds[1], SCALES.CHROMATIC, 2, "falling", [60, 120], 0.01, "green"),
+    new Voice(sounds[1], SCALES.MAJOR, 1, "rising", [70, 130, 270], 0.01, 'blue'),
+    //new Voice(sounds[5], [30, 200, 330], 0.05, 'turquoise'),
   ];
 }
 
@@ -46,15 +47,16 @@ function draw() {
   background(255);
 
   // Instructions
-  text("Use arrow keys to adjust temp and number keys to (un)mute voices", 10, 20);
+  text("Current voice: " + v, 10, 20);
 
   // Translate whole thing to center
   translate(cx, cy);
+  rotate(-90);
   
   // Run the voices
   for (let voice of voices) {
     // Skip over last voice until you want to play it
-    if(rotate) voice.rotate();
+    if(revolve) voice.revolve();
     voice.play(a);
     voice.display();
   }
@@ -83,7 +85,10 @@ function keyPressed() {
 
   switch(keyCode) {
     case 32:
-      rotate = !rotate;
+      voices[v].mute();
+      break;
+    case RETURN:
+      voices[v].revolve();
       break;
     case UP_ARROW:
       aspeed++;
@@ -100,7 +105,8 @@ function keyPressed() {
     default:
       try {
       // Turn on off voices
-      voices[key].mute();
+      if(Number.isFinite(+key)) v = key;
+        v = key;
       }
       catch(err) {
         console.log("No voice at this key:", key);
