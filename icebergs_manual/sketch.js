@@ -11,28 +11,39 @@ const SPEEDS = {
 let area;
 let flip = true;
 
+// Position of 2 people
+let movers = {}
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   //colorMode(HSB, 360, 100, 100, 100);
   noStroke();
+
+  // Listen for data coming from the server
+  pozyx();
+
+  // Position movers
+  movers = init_movers();
 }
 
 // Initial position
 function pos() {
 
   // Center
-  let cx = random(width * 0.25, width * 0.75);
-  let cy = random(height * 0.25, height * 0.75);
+  // let cx = random(width * 0.25, width * 0.75);
+  // let cy = random(height * 0.25, height * 0.75);
+  let mp = midpoint(movers);
+  let d = distance(movers);
 
   // 4 Sides
-  let side = width * random(0.1, 0.4);
+  let side = random( d * 0.5, d * 2.0 );
   let l = - side;
   let r = + side;
   let t = - side;
   let b = + side;
 
-  return { l: l, r: r, t: t, b: b, cx: cx, cy: cy }
+  return { l: l, r: r, t: t, b: b, cx: mp.x, cy: mp.y }
 }
 
 function drift() {
@@ -76,6 +87,9 @@ function draw() {
     create();
     flip = !flip;
   } else area.run();
+
+  // Draw the people
+  draw_movers(movers);
 }
 
 class Area {
@@ -121,8 +135,8 @@ class Area {
     let x = cos(th) * r + this.cx;
     let y = sin(th) * r + this.cy;
     noStroke();
-    fill('red');
-    ellipse(x, y, 15, 15);
+    //fill('green');
+    //ellipse(x, y, 15, 15);
     return x < - M || x > width + M || y < - M || y > height + M;
   }
 
@@ -150,4 +164,14 @@ class Area {
     endShape();
     pop();
   }
+}
+
+function keyPressed() {
+  toggle_pozyx(key);
+}
+
+// Move the closest point with the mouse
+// mouse is being dragged
+function mouseDragged() {
+  movers = reposition(movers)
 }

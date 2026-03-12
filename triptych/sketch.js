@@ -36,8 +36,25 @@ function reset() {
 }
 
 // Get the speed
+function pos_neg(n) {
+  return n * (random(1) > 0.5 ? 1 : -1);
+}
 function get_speed() {
-  return random(splow, sphigh) * (random(1) < 0.5 ? -1 : 1);
+  let crawl = pos_neg(random(0, 1));
+  let stroll = pos_neg(random(1, 3));
+  let walk = pos_neg(random(3, 5));
+  let run = pos_neg(random(8, 10));
+  let vanish = pos_neg(100);
+
+  let r = random(1);
+  if(r > 0.9) return crawl;
+  else if(r > 0.6) return stroll;
+  else if(r > 0.3) return walk;
+  else if(r > 0.05) return run;
+  else if(r > 0) return vanish;
+  
+
+  //return random(splow, sphigh) * (random(1) < 0.5 ? -1 : 1);
 }
 
 function draw() {
@@ -66,7 +83,7 @@ function draw() {
     textAlign(RIGHT, BOTTOM);
     textSize(24);
     fill('red');
-    text("b1: " + nfs(b1, 0, 2) + "\tb2: " + nfs(b2, 0, 2) + "\tLow: " + splow + "\tHigh: " + sphigh, width, height);
+    text("b1: " + nfs(b1, 0, 2) + '(' + nfs(b1speed, 0, 2) + ')' + "\tb2: " + nfs(b2, 0, 2) + '(' + nfs(b2speed, 0, 2) + ')' + "\tLow: " + splow + "\tHigh: " + sphigh, width, height);
   }
 }
 

@@ -17,9 +17,15 @@ let revolve = false;
 
 function preload() {
   // Load all the sounds
-  for (let i = 0; i < NUM; i++) {
-    sounds.push(loadSound("data/bass_note.wav"));
-  }
+  sounds[0] = loadSound("data/2.mp3");
+  sounds[1] = loadSound("data/bass_note.wav");
+  sounds[2] = loadSound("data/bass_note.wav");
+  sounds[3] = loadSound("data/bass_note.wav");
+  sounds[4] = loadSound("data/bass_note.wav");
+  sounds[5] = loadSound("data/cowbell.wav");
+  sounds[6] = loadSound("data/cowbell.wav");
+  
+  
 }
 
 function setup() {
@@ -35,10 +41,10 @@ function setup() {
   // Makes voices with following parameters:
   // soundfile, array of beats, max random rotation speed, color
   voices = [
-    new Voice(sounds[0], SCALES.BLUES, 2, "rising", [0], 0.1, "orange"),
-    new Voice(sounds[0], SCALES.BLUES, 1, "falling", [180, 240], 0.01, "red"),
-    new Voice(sounds[1], SCALES.CHROMATIC, 2, "falling", [60, 120], 0.01, "green"),
-    new Voice(sounds[1], SCALES.MAJOR, 1, "rising", [70, 130, 270], 0.01, 'blue'),
+    new Voice(sounds[3], SCALES.BLUES, 2, 0.5, "rising", "static", [0], 0.1, "orange"),
+    new Voice(sounds[1], SCALES.BLUES, 1, 2, "falling", "linear", [180, 240], 0.01, "red"),
+    new Voice(sounds[2], SCALES.CHROMATIC, 2, 1, "falling", "varied", [30, 60, 90, 120, 150, 180, 210, 270], 0.01, "green"),
+    new Voice(sounds[4], SCALES.CHROMATIC, 1, 1, "rising", "periodic", [70, 130, 270], 0.01, 'blue'),
     //new Voice(sounds[5], [30, 200, 330], 0.05, 'turquoise'),
   ];
 }

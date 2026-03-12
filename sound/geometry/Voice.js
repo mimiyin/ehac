@@ -1,6 +1,7 @@
 class Voice {
-  constructor(sound, ratios, octaves, dir, beats, aspeed, col) {
-    this.ratios = this.scale(ratios, octaves, dir);
+  constructor(sound, ratios, octaves, oct, dir, shape, beats, aspeed, col) {
+    this.ratios = this.scale(ratios, octaves, oct, dir);
+    this.shape = shape;
     this.sound = sound;
     this.beats = beats;
     this.aspeed = aspeed;
@@ -35,11 +36,11 @@ class Voice {
     this.beats.sort();
   }
 
-  scale(_ratios, octaves, dir) {
+  scale(_ratios, octaves, oct, dir) {
     let ratios = [_ratios[0]];
     for (let o = 1; o <= octaves; o++) {
       for (let r = 1; r < _ratios.length; r++) {
-        let ratio = _ratios[r] * o;
+        let ratio = _ratios[r] * o * oct;
         ratios.push(ratio);
       }
     }
@@ -61,15 +62,35 @@ class Voice {
       }
     }
   }
+
+  noisy() {
+    return floor(noise(this.beat + (frameCount%360)) * (this.ratios.length));
+  }
+
+  melody(shape) {
+    switch(shape) {
+      case 'static' :
+        return 0;
+      case 'linear':
+        return floor(map(this.beat, 0, 360, 0, this.ratios.length));
+      case 'random':
+        return floor(random(0, this.ratios.length));
+      case 'noisy':
+        return this.noisy();
+      case 'varied':
+        return random(1) > 0.3 ? floor(random(0, this.ratios.length)) : this.noisy();
+      case 'periodic':
+        return floor((cos(this.beat + frameCount%360) + 1) * (this.ratios.length / 2));
+    }
+  }
+
   play(a) {
 
     // Set the next beat
     this.next(a);
 
     if (abs(a - this.beat) < aspeed) {
-      //this.t += 360 / (this.ratios.length); //random(1) > 0.3 ? 10 : 60;
-      //let r = this.ratios.length - floor((cos(this.t) + 1) * this.ratios.length * 0.5);
-      let r = floor(map(this.beat, 0, 360, 0, this.ratios.length));
+      let r = this.melody(this.shape);
       let ratio = this.ratios[r];
       this.sound.rate(ratio);
       if (this.unmute) this.sound.play();
