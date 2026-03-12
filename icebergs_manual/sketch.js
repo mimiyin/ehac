@@ -15,7 +15,7 @@ let flip = true;
 let movers = {}
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(WIDTH, HEIGHT);
 
   //colorMode(HSB, 360, 100, 100, 100);
   noStroke();
@@ -72,7 +72,6 @@ function create() {
       speed: distribute([{ min: 0.01, max: 0.02, weight: 1}, { min: 0.02, max: 0.05, weight: 10}, {min: 0.08, max: 0.1, weight: 5}]) // random(0.01, 0.1) * 2
     };
 
-    console.log(a.speed);
     let th = {
       pos: random(TWO_PI),
       speed: random(-0.001, 0.001)
@@ -146,7 +145,7 @@ class Area {
     let br = this.corner(this.r.pos, this.b.pos);
     let bl = this.corner(this.l.pos, this.b.pos);
 
-    console.log("OFF", tl, tr, br, bl);
+    //console.log("OFF", tl, tr, br, bl);
     return (tl && tr && br && bl);
   }
 

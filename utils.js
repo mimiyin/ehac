@@ -12,7 +12,7 @@ function distribute(ranges) {
 // Get random value from array
 function randArr(array) {
     let i = Math.floor(Math.random() * array.length);
-    console.log(array, array[i]);
+    //console.log(array, array[i]);
     return array[i];
 }
 

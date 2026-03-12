@@ -1,5 +1,10 @@
 console.log("POZYX code");
 
+// Screen size
+const WIDTH = 3840;
+const HEIGHT = 4320;
+
+
 // Auto-pilot
 let pozyx_on = false;
 
@@ -12,13 +17,13 @@ socket.on('connect', function () {
 // pozyx
 let tags = {};
 let tags2MoversLookup = {
-  10002038: 'A',
-  10002092: 'B',
+  10002039: 'A',
+  10002042: 'B',
 }
-const XMULT = 0.05;
-const YMULT = 0.05;
-const X_OFF = 0;
-const Y_OFF = 250;
+const XMULT = 0.5;
+const YMULT = 0.5;
+const X_OFF = -2000;
+const Y_OFF = 500;
 
 // Listen for data coming from the server
 function pozyx() {
@@ -34,13 +39,14 @@ function pozyx() {
 
     if (data) {
       if (data.coordinates) {
-        let x = data.coordinates.x / 20;
-        let y = (data.coordinates.y / 20) + 250;
+        let x = data.coordinates.x;
+        let y = data.coordinates.y;
         if (id in tags) tags[id] = { x: x, y: y, ts: ts };
-        if (poxyz) {
+        //if (poxyz_on) {
           let m = tags2MoversLookup[id];
           movers[m] = calc(x, y);
-        }
+          console.log("xy", m, movers[m].x, movers[m].y);
+        //}
       }
     }
   });
@@ -48,7 +54,15 @@ function pozyx() {
 
 // Map poxyz to projection
 function calc(x, y) {
-  return { x: x * XMULT + X_OFF, y: y * YMULT + Y_OFF }
+  let theta = -PI/4.15;
+  x = x*cos(theta) - y*sin(theta);
+  y = x*sin(theta) + y*cos(theta);
+  x*=XMULT;
+  y*=YMULT;
+  x+=width/2 + X_OFF;
+  y+=height/2 + Y_OFF;
+
+  return { x: x, y: y }
 }
 
 // Turn pozyx on/off
@@ -71,8 +85,12 @@ function init_movers() {
 // Draw people
 function draw_movers(movers) {
   fill('red');
-  ellipse(movers.A.x, movers.A.y, 10, 10);
-  ellipse(movers.B.x, movers.B.y, 10, 10);
+  ellipse(movers.A.x, movers.A.y, 100, 100);
+  ellipse(movers.B.x, movers.B.y, 100, 100);
+  fill('white');
+  textSize(128);
+  text('A', movers.A.x, movers.A.y);  
+  text('B', movers.B.x, movers.B.y);
 }
 
 // Calculate midpoint between movers
