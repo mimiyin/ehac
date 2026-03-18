@@ -155,7 +155,7 @@ function draw() {
 
   // Calculate the average angle
   if (diff(angle, _angle) > 0.1) _angle += a_dir * abs(angle - _angle) * 0.2;
-  console.log(nfs(pangle, 0, 2), 'to ' + nfs(angle, 0, 2), 'now ' + nfs(_angle, 0, 2), 'dir ' + a_dir);
+  //console.log(nfs(pangle, 0, 2), 'to ' + nfs(angle, 0, 2), 'now ' + nfs(_angle, 0, 2), 'dir ' + a_dir);
   // Wrap in both angles
   if (_angle < 0) _angle = TWO_PI;
   _angle %= TWO_PI;

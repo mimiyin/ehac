@@ -1,5 +1,5 @@
 let bx = 0;
-let bxspeed = 0.05;
+let bxspeed = 0.1;
 let cw;
 let cols = 100;
 let go = true;
@@ -7,22 +7,23 @@ let go = true;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noCursor();
-  cw = width/cols;
+  cw = height/cols;
   
-  stroke(0, 10);
+  stroke(0, 16);
+  background(0);
 }
 
 function draw() {
   background(0, 10);
   if(go) bx += bxspeed;
   for(let x = 0; x < bx; x++) {
-    fill(x % 2 == 0 ? 255 : 0, 1);
-    rect(x, 0, cw, height);
+    fill(x % 2 == 0 ? 255 : 0, 10);
+    rect(0, x, width, cw);
   }
 }
 
 function mousePressed() {
-  bx = mouseX;
+  bx = mouseY;
 }
 
 function keyPressed() {
