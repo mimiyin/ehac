@@ -1,0 +1,7 @@
+name,tox_path,version,length
+noise,scenes/noise.tox,noise.7.toe,10
+ocean,scenes/ocean.tox,ocean.16.toe,10
+triptych,scenes/triptych.tox,triptych.209.toe,10
+flood,scenes/flood.tox,flood.61.toe,10
+angle,scenes/angle.tox,angle.205.toe,10
+icebergs,scenes/icebergs.tox,icebergs.1.toe,10

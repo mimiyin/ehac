@@ -1,0 +1,4 @@
+name,tox_path,length
+circle,scenes/circle.tox,3
+rect,scenes/rect.tox,3
+triangle,scenes/triangle.tox,5
