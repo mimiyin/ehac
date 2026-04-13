@@ -24,7 +24,7 @@ const XMULT = 0.45;
 const YMULT = 0.7;
 const X_OFF = -2000;
 const Y_OFF = 500;
-const THETA = -PI/5;
+const THETA = -Math.PI/5;
 
 
 // Listen for data coming from the server
@@ -45,7 +45,7 @@ function pozyx() {
         let y = data.coordinates.y;
         if (id in tags) tags[id] = { x: x, y: y, ts: ts };
         //if (poxyz_on) {
-          let m = tags2MoversLookup[id];
+          let m = tags2MoversLookup[id] || m;
           movers[m] = calc(x, y);
           console.log("xy", m, movers[m].x, movers[m].y);
         //}
