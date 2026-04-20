@@ -20,11 +20,10 @@ let tags2MoversLookup = {
   10002039: 'A',
   10002042: 'B',
 }
-const XMULT = 0.45;
-const YMULT = 0.7;
-const X_OFF = -2000;
-const Y_OFF = 500;
-const THETA = -Math.PI/5;
+const XMULT = .375;
+const YMULT = .375;
+const X_OFF = 1250;
+const Y_OFF = 0;
 
 
 // Listen for data coming from the server
@@ -56,16 +55,15 @@ function pozyx() {
 
 // Map poxyz to projection
 function calc(x, y) {
-  // Rotate
-  x = x*cos(THETA) - y*sin(THETA);
-  y = x*sin(THETA) + y*cos(THETA);
+  
+  // Translate
+  x += X_OFF;
+  y += Y_OFF;
+
   // Scale
   x*=XMULT;
   y*=YMULT;
-  // Translate
-  x += width/2 + X_OFF;
-  y += height/2 + Y_OFF;
-
+  
   return { x: x, y: y }
 }
 
