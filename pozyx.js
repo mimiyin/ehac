@@ -44,7 +44,7 @@ function pozyx() {
         let y = data.coordinates.y;
         if (id in tags) tags[id] = { x: x, y: y, ts: ts };
         //if (poxyz_on) {
-          let m = tags2MoversLookup[id] || m;
+          let m = tags2MoversLookup[id] || id;
           movers[m] = calc(x, y);
           console.log("xy", m, movers[m].x, movers[m].y);
         //}

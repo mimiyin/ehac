@@ -85,6 +85,9 @@ function setup() {
 }
 
 function draw() {
+  
+  // Only proceed if we have A and B
+  if(!(movers.A && movers.B)) return;
 
   // Calculate the mid-point between 2 points
   // Store this frame's midpoint
