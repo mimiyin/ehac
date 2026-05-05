@@ -8,25 +8,34 @@ const SPEEDS = {
 }
 
 // Iceberg
-let area;
+let areas = [];
 let flip = true;
+
+// Position of 2 people
+let movers = {}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   //colorMode(HSB, 360, 100, 100, 100);
   noStroke();
+
+  movers = init_movers();
+  console.log(movers);
+
+  pozyx();
 }
 
 // Initial position
 function pos() {
 
   // Center
-  let cx = random(width * 0.25, width * 0.75);
-  let cy = random(height * 0.25, height * 0.75);
+  
+  let cx = (movers.A.x + movers.B.x) / 2;
+  let cy = (movers.A.y + movers.B.y) / 2;
 
   // 4 Sides
-  let side = width * random(0.1, 0.4);
+  let side = dist(movers.A.x, movers.A.y, movers.B.x, movers.B.y)/2;
   let l = - side;
   let r = + side;
   let t = - side;
@@ -56,26 +65,52 @@ function drift() {
 
 function create() {
   let c = 255;
-    let a = {
-      pos: 0,
-      speed: distribute([{ min: 0.01, max: 0.02, weight: 1}, { min: 0.02, max: 0.05, weight: 10}, {min: 0.08, max: 0.1, weight: 5}]) // random(0.01, 0.1) * 2
-    };
+  let a = {
+    pos: 0,
+    speed: distribute([{ min: 0.01, max: 0.02, weight: 1 }, { min: 0.02, max: 0.05, weight: 10 }, { min: 0.08, max: 0.1, weight: 5 }]) // random(0.01, 0.1) * 2
+  };
 
-    console.log(a.speed);
-    let th = {
-      pos: random(TWO_PI),
-      speed: random(-0.001, 0.001)
-    }
-    area = new Area(pos(), drift(), c, a, th);
+  let th = {
+    pos: random(TWO_PI),
+    speed: random(-0.001, 0.001)
+  }
+  areas.push(new Area(pos(), drift(), c, a, th));
+}
+
+function all_off() {
+  let off = true;
+  for(let area of areas) {
+    if(!area.off()) off = false;
+  }
+  return off;
 }
 
 function draw() {
   background(0);
 
-  if (!area || area.off() || keyIsPressed) {
+  if (areas.length == 0 || all_off() || keyIsPressed) {
     create();
     flip = !flip;
-  } else area.run();
+  } 
+
+  // Run all the areas
+  // Check for dead
+  for(let a in areas) {
+    let area = areas[a];
+    area.run();
+    if(area.dead()) areas.splice(a);
+  }
+
+  noStroke();
+  textSize(64);
+  textAlign(CENTER, CENTER);
+  for(let m in movers) {
+    let mover = movers[m];
+    fill('red');
+    ellipse(mover.x, mover.y, 20);
+    fill('white');
+    text(m, mover.x, mover.y);
+  }
 }
 
 class Area {
@@ -102,6 +137,14 @@ class Area {
     return this.a.pos < 10;
   }
 
+  fade() {
+    this.a.pos -= this.a.speed;
+  }
+
+  dead() {
+    return this.a.pos < 0;
+  }
+
   update() {
     if (this.cueing()) return;
 
@@ -111,6 +154,8 @@ class Area {
     this.b.pos += this.b.speed;
 
     this.th.pos += this.th.speed;
+
+    if(this.off()) this.fade();
   }
 
   corner(_x, _y) {
@@ -132,7 +177,7 @@ class Area {
     let br = this.corner(this.r.pos, this.b.pos);
     let bl = this.corner(this.l.pos, this.b.pos);
 
-    console.log("OFF", tl, tr, br, bl);
+    //console.log("OFF", tl, tr, br, bl);
     return (tl && tr && br && bl);
   }
 

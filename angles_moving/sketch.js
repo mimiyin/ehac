@@ -1,9 +1,12 @@
 // SETTINGS
 // Period in seconds
-const PERIOD = 10;
+const PERIOD = 2;
 
 // Position of 2 people
 let movers = {}
+
+// Swing mode
+let swing = true;
 
 // Flip of divison?
 let flip = true;
@@ -166,11 +169,12 @@ function draw() {
 
   // Draw the background
   background(flip ? 255 : 0);
-  //background(0);
+  if(swing) background(0);
 
   // Rotate the canvas to that angle
   // to draw the dividing rectangle
   fill(flip ? 0 : 255, a - amax);
+  if(swing) fill(0);
   rect(0, 0, width, height);
   push();
   translate(amid.x, amid.y);
@@ -179,6 +183,7 @@ function draw() {
   // If flip, then this one is ahead
   //fill(255);
   fill(flip ? 0 : 255, a);
+  if(swing) fill(255);
   rect(0, -diag / 2, diag, diag);
   // If flip, then this one is behind
   pop();
@@ -190,7 +195,13 @@ function draw() {
 }
 
 function keyPressed() {
-  toggle_pozyx(key);
+  switch (key) {
+    case 'p':
+      toggle_pozyx();
+      break;
+    case 's':
+      swing = !swing;
+  }
 }
 
 // Move the closest point with the mouse
