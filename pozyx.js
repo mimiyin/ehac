@@ -6,7 +6,7 @@ const HEIGHT = 4320;
 
 
 // Auto-pilot
-let pozyx_on = false;
+let pozyx_on = true;
 
 // Sockets
 let socket = io();
@@ -23,7 +23,7 @@ let tags2MoversLookup = {
 const XMULT = .375;
 const YMULT = .375;
 const X_OFF = 1250;
-const Y_OFF = 0;
+const Y_OFF = -100;
 
 
 // Listen for data coming from the server
@@ -44,9 +44,9 @@ function pozyx() {
         let y = data.coordinates.y;
         if (id in tags) tags[id] = { x: x, y: y, ts: ts };
         //if (poxyz_on) {
-          let m = tags2MoversLookup[id] || id;
-          movers[m] = calc(x, y);
-          console.log("xy", m, movers[m].x, movers[m].y);
+        let m = tags2MoversLookup[id] || id;
+        movers[m] = calc(x, y);
+        console.log("xy", m, movers[m].x, movers[m].y);
         //}
       }
     }
@@ -55,30 +55,26 @@ function pozyx() {
 
 // Map poxyz to projection
 function calc(x, y) {
-  
+
   // Translate
   x += X_OFF;
   y += Y_OFF;
 
   // Scale
-  x*=XMULT;
-  y*=YMULT;
-  
+  x *= XMULT;
+  y *= YMULT;
+
   return { x: x, y: y }
 }
 
 // Turn pozyx on/off
-function toggle_pozyx(key) {
-  switch (key) {
-    case 'p':
-      pozyx_on = !pozyx_on;
-      break;
-  }
+function toggle_pozyx() {
+  pozyx_on = !pozyx_on;
 }
 
 // Initial position of mover
 function init_movers() {
-   return {
+  return {
     A: { x: width * 0.45, y: height * 0.5 },
     B: { x: width * 0.55, y: height * 0.5 }
   }
@@ -91,13 +87,13 @@ function draw_movers(movers) {
   ellipse(movers.B.x, movers.B.y, 100, 100);
   fill('white');
   textSize(128);
-  text('A', movers.A.x, movers.A.y);  
+  text('A', movers.A.x, movers.A.y);
   text('B', movers.B.x, movers.B.y);
 }
 
 // Calculate midpoint between movers
 function midpoint(movers) {
-  return { x : (movers.A.x + movers.B.x) / 2, y: (movers.A.y + movers.B.y) / 2 }
+  return { x: (movers.A.x + movers.B.x) / 2, y: (movers.A.y + movers.B.y) / 2 }
 }
 
 // Calculate distance between movers

@@ -44,7 +44,7 @@ client.on("message", (topic, message) => {
 
   try {
     let data = JSON.parse(message.toString());
-    //console.log(topic, data);
+    console.log(topic, data);
     io.emit("pozyx", data);
   }
   catch(e) {
