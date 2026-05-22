@@ -1,29 +1,38 @@
-let bx = 0;
-let bxspeed = 0.1;
-let cw;
-let cols = 100;
+let by = 200;
+let byspeed = 0.05;
+let rh;
+let rows = 10;
+let a = 0;
 let go = true;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   noCursor();
-  cw = height/cols;
-  
-  stroke(0, 16);
+  rh = height / rows;
+  noStroke();
   background(0);
+  console.log(rh);
 }
 
 function draw() {
-  background(0, 10);
-  if(go) bx += bxspeed;
-  for(let x = 0; x < bx; x++) {
-    fill(x % 2 == 0 ? 255 : 0, 10);
-    rect(0, x, width, cw);
+  background(0);
+  if (go) by += byspeed;
+
+  a++;
+  //a=40;
+  if(a > 64) a = 0;
+  let _a = a;
+  for (let y = by; y >= 0; y--) {
+    _a-=3;
+    if (_a < 0) _a = 64;
+    stroke(255, round(_a));
+    //stroke(255);
+    line(-10, y, width + 10, y);
   }
 }
 
 function mousePressed() {
-  bx = mouseY;
+  by = mouseY;
 }
 
 function keyPressed() {
@@ -32,17 +41,17 @@ function keyPressed() {
       go = !go;
       break;
     case RIGHT_ARROW:
-      bxspeed += 0.001;
+      byspeed += 0.001;
       break;
     case LEFT_ARROW:
-      bxspeed -= 0.001;
+      byspeed -= 0.001;
       break;
     case UP_ARROW:
-      bxspeed -= 0.1;
+      byspeed -= 0.1;
       break;
     case DOWN_ARROW:
-      bxspeed += 0.1;
+      byspeed += 0.1;
       break;
   }
-  console.log(nfs(bxspeed, 0, 2));
+  console.log(nfs(byspeed, 0, 2));
 }
