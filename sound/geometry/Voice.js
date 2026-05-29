@@ -28,7 +28,7 @@ class Voice {
   _revolve() {
     for (let b in this.beats) {
       let beat = this.beats[b];
-      beat += (b + 1) * this.aspeed;
+      beat += this.aspeed;
       beat %= 360;
       this.beats[b] = beat;
     }
@@ -37,25 +37,24 @@ class Voice {
   }
 
   scale(_ratios, octaves, oct, dir) {
-    let ratios = [_ratios[0]];
+    let ratios = [];
     for (let o = 1; o <= octaves; o++) {
-      for (let r = 1; r < _ratios.length; r++) {
+      for (let r = 0; r < _ratios.length; r++) {
         let ratio = _ratios[r] * o * oct;
         ratios.push(ratio);
       }
     }
     // Halve everything if more than 1 octave
     if (octaves > 1) ratios.forEach((v, k) => { ratios[k] = v / 2 });
-
     return dir == "falling" ? ratios.reverse() : ratios;
   }
 
   next(a) {
     let d = 360;
-    for(let b in this.beats) {
+    for (let b in this.beats) {
       let beat = this.beats[b];
-      let _d = abs(a-beat);
-      if(_d < d) {
+      let _d = abs(a - beat);
+      if (_d < d) {
         this.b = b;
         this.beat = beat;
         d = _d;
@@ -64,15 +63,14 @@ class Voice {
   }
 
   noisy() {
-    return floor(noise(this.beat + (frameCount%360)) * (this.ratios.length));
+    return floor(noise(this.beat + (frameCount % 360)) * (this.ratios.length));
   }
 
   melody(shape) {
-    switch(shape) {
-      case 'static' :
-        return 0;
+    if(typeof shape == 'number') return shape;
+    switch (shape) {
       case 'linear':
-        return floor(map(this.beat, 0, 360, 0, this.ratios.length));
+        return this.b;
       case 'random':
         return floor(random(0, this.ratios.length));
       case 'noisy':
@@ -80,29 +78,34 @@ class Voice {
       case 'varied':
         return random(1) > 0.3 ? floor(random(0, this.ratios.length)) : this.noisy();
       case 'periodic':
-        return floor((cos(this.beat + frameCount%360) + 1) * (this.ratios.length / 2));
+        return floor((cos(this.beat + frameCount % 360) + 1) * (this.ratios.length / 2));
     }
   }
 
   play(a) {
 
+    // revolve
+    if(this.revolving) this._revolve();
+
     // Set the next beat
     this.next(a);
+
+    // Don't bother playing
+    if(!this.unmute) return;
 
     if (abs(a - this.beat) < aspeed) {
       let r = this.melody(this.shape);
       let ratio = this.ratios[r];
       this.sound.rate(ratio);
-      if (this.unmute) this.sound.play();
+      this.sound.play();
     }
 
-    if (this.revolving) this._revolve();
   }
 
   display() {
     this.col.setAlpha(this.unmute ? 255 : 16);
     fill(this.col);
-    
+
 
     for (let b in this.beats) {
       let beat = this.beats[b];
@@ -119,6 +122,6 @@ class Voice {
       // text(b, 0, 0);
       // pop();
     }
-  
+
   }
 }

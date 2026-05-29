@@ -14,6 +14,9 @@ let flip = true;
 // Position of 2 people
 let movers = {}
 
+// Show data
+let debug = false;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -30,12 +33,12 @@ function setup() {
 function pos() {
 
   // Center
-  
+
   let cx = (movers.A.x + movers.B.x) / 2;
   let cy = (movers.A.y + movers.B.y) / 2;
 
   // 4 Sides
-  let side = dist(movers.A.x, movers.A.y, movers.B.x, movers.B.y)/2;
+  let side = dist(movers.A.x, movers.A.y, movers.B.x, movers.B.y) / 2;
   let l = - side;
   let r = + side;
   let t = - side;
@@ -75,12 +78,13 @@ function create() {
     speed: random(-0.001, 0.001)
   }
   areas.push(new Area(pos(), drift(), c, a, th));
+  flip = !flip;
 }
 
 function all_off() {
   let off = true;
-  for(let area of areas) {
-    if(!area.off()) off = false;
+  for (let area of areas) {
+    if (!area.off()) off = false;
   }
   return off;
 }
@@ -88,28 +92,40 @@ function all_off() {
 function draw() {
   background(0);
 
-  if (areas.length == 0 || all_off() || keyIsPressed) {
+  if (areas.length == 0 || all_off()) {
     create();
-    flip = !flip;
-  } 
+  }
 
   // Run all the areas
   // Check for dead
-  for(let a in areas) {
+  for (let a in areas) {
     let area = areas[a];
     area.run();
-    if(area.dead()) areas.splice(a);
+    if (area.dead()) areas.splice(a);
   }
 
-  noStroke();
-  textSize(64);
-  textAlign(CENTER, CENTER);
-  for(let m in movers) {
-    let mover = movers[m];
-    fill('red');
-    ellipse(mover.x, mover.y, 20);
-    fill('white');
-    text(m, mover.x, mover.y);
+  if (debug) {
+    noStroke();
+    textSize(64);
+    textAlign(CENTER, CENTER);
+    for (let m in movers) {
+      let mover = movers[m];
+      fill('red');
+      ellipse(mover.x, mover.y, 20);
+      fill('white');
+      text(m, mover.x, mover.y);
+    }
+  }
+}
+
+function keyPressed() {
+  switch (keyCode) {
+    case RETURN:
+      create();
+      break;
+    case DELETE:
+      debug = !debug;
+      break;
   }
 }
 
@@ -155,7 +171,7 @@ class Area {
 
     this.th.pos += this.th.speed;
 
-    if(this.off()) this.fade();
+    if (this.off()) this.fade();
   }
 
   corner(_x, _y) {

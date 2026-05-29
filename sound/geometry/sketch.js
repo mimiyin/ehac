@@ -6,7 +6,7 @@ let FULL_CIRCLE = 360;
 let r;
 let cx, cy;
 let a = 0;
-let aspeed = 8;
+let aspeed = 10 ;
 
 // Beats
 let v = 0;
@@ -41,11 +41,13 @@ function setup() {
   // Makes voices with following parameters:
   // soundfile, array of beats, max random rotation speed, color
   voices = [
-    new Voice(sounds[3], SCALES.BLUES, 2, 0.5, "rising", "static", [0], 0.1, "orange"),
-    new Voice(sounds[1], SCALES.BLUES, 1, 2, "falling", "linear", [180, 240], 0.01, "red"),
-    new Voice(sounds[2], SCALES.CHROMATIC, 2, 1, "falling", "varied", [30, 60, 90, 120, 150, 180, 210, 270], 0.01, "green"),
-    new Voice(sounds[4], SCALES.CHROMATIC, 1, 1, "rising", "periodic", [70, 130, 270], 0.01, 'blue'),
-    //new Voice(sounds[5], [30, 200, 330], 0.05, 'turquoise'),
+    new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", 0, [0], 0.05, "red"),
+    new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", 0, [0], 0.02, "royalblue"),
+    new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", 1, [75], -0.03, "blue"),
+    new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", 2, [140], 0.04, "mediumblue"),
+    new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", 3, [210], 0.05, "darkblue"),
+    new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", "linear", [0, 75, 140, 210], -0.02, "orange"),
+    new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", "linear", [0, 75, 140, 210], 0.04, "darkorange"),
   ];
 }
 

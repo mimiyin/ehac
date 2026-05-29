@@ -1,6 +1,6 @@
 // SETTINGS
 // Period in seconds
-const PERIOD = 2;
+const PERIOD = 2; // <-- HOW LONG BETWEEN SWINGS
 
 // Position of 2 people
 let movers = {}
@@ -37,7 +37,7 @@ let pangle = 0;
 let _angle = 0;
 let a_dir = 1;
 let a_off = 0;
-let a_speed = 0.0001;
+let a_speed = 0.00025; // <-- SPEED OF DRIFT
 
 // Refresh rate 
 let rr = 60 * PERIOD;
