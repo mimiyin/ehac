@@ -50,6 +50,9 @@ let amax = 255;
 let aspeed = 1;
 let adir = 1;
 
+// Debug
+let debug = false;
+
 // Calc real angle difference
 function diff(a, pa) {
   let d = abs(a - pa);
@@ -190,7 +193,7 @@ function draw() {
 
 
   // Draw the people
-  draw_movers(movers);
+  if(debug) draw_movers(movers);
 
 }
 
@@ -201,6 +204,12 @@ function keyPressed() {
       break;
     case 's':
       swing = !swing;
+  }
+
+  switch (keyCode) {
+    case DELETE:
+      debug = !debug;
+      break;
   }
 }
 
