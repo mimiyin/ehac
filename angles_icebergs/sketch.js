@@ -181,9 +181,11 @@ class Area {
     let th = createVector(_x, _y).heading() + this.th.pos;
     let x = cos(th) * r + this.cx;
     let y = sin(th) * r + this.cy;
-    noStroke();
-    fill('red');
-    ellipse(x, y, 15, 15);
+    if (debug) {
+      noStroke();
+      fill('red');
+      ellipse(x, y, 15, 15);
+    }
     return x < - M || x > width + M || y < - M || y > height + M;
   }
 
