@@ -187,8 +187,7 @@ function draw() {
   //fill(255);
   fill(flip ? 0 : 255, a);
   if(swing) fill(255);
-  //rect(0, -diag / 2, diag, diag);
-  triangle(0, -height/2, width/2, 0, -width/2, height/2.5);
+  rect(0, -diag / 2, diag, diag);
   // If flip, then this one is behind
   pop();
 
