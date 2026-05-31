@@ -6,7 +6,7 @@ let FULL_CIRCLE = 360;
 let r;
 let cx, cy;
 let a = 0;
-let aspeed = 10 ;
+let aspeed = 10;
 
 // Beats
 let v = 0;
@@ -24,8 +24,8 @@ function preload() {
   sounds[4] = loadSound("data/bass_note.wav");
   sounds[5] = loadSound("data/cowbell.wav");
   sounds[6] = loadSound("data/cowbell.wav");
-  
-  
+
+
 }
 
 function setup() {
@@ -49,6 +49,9 @@ function setup() {
     new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", "linear", [0, 75, 140, 210], -0.02, "orange"),
     new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", "linear", [0, 75, 140, 210], 0.04, "darkorange"),
   ];
+
+  // Record
+  init_rec();
 }
 
 function draw() {
@@ -60,11 +63,11 @@ function draw() {
   // Translate whole thing to center
   translate(cx, cy);
   rotate(-90);
-  
+
   // Run the voices
   for (let voice of voices) {
     // Skip over last voice until you want to play it
-    if(revolve) voice.revolve();
+    if (revolve) voice.revolve();
     voice.play(a);
     voice.display();
   }
@@ -83,15 +86,20 @@ function draw() {
   ellipse(x, y, 20, 20);
 
   // Move the playhead (in DEGREES, not radians)
-  a += aspeed;  
+  a += aspeed;
   // Wrap around
   a %= FULL_CIRCLE;
 
 }
 
 function keyPressed() {
+  // ensure audio is enabled
+  userStartAudio();
 
-  switch(keyCode) {
+  switch (keyCode) {
+    case 82:
+      rec('geometry');
+      break;
     case 32:
       voices[v].mute();
       break;
@@ -105,18 +113,18 @@ function keyPressed() {
       aspeed--;
       break;
     case RIGHT_ARROW:
-      aspeed+=0.1;
+      aspeed += 0.1;
       break;
     case LEFT_ARROW:
-      aspeed-=0.1;
+      aspeed -= 0.1;
       break;
     default:
       try {
-      // Turn on off voices
-      if(Number.isFinite(+key)) v = key;
+        // Turn on off voices
+        if (Number.isFinite(+key)) v = key;
         v = key;
       }
-      catch(err) {
+      catch (err) {
         console.log("No voice at this key:", key);
       }
       break;
@@ -125,8 +133,8 @@ function keyPressed() {
   // Constrain the speed
   aspeed = constrain(aspeed, 1, 15);
 
-  
-  
+
+
 
 
 }

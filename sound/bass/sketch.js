@@ -26,13 +26,16 @@ function preload() {
 }
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  h = height / NUM;
 
   // Start everything off
   for(let n = 0; n < NUM; n++) {
     states.push(false);
   }
 
+  // Recording
+  init_rec();
+
+  h = height / NUM;
   background(0);
 }
 
@@ -102,6 +105,9 @@ function mousePressed() {
 function keyPressed() {
 
   switch (key) {
+    case 'r':
+      rec('bass');
+      break;
     case 'q':
       s = 'q';
       t = 0;
