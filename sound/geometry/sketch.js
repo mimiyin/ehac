@@ -48,6 +48,7 @@ function setup() {
     new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", 3, [210], 0.05, "darkblue"),
     new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", "linear", [0, 75, 140, 210], -0.02, "orange"),
     new Voice(sounds[3], SCALES.PLUNGE, 1, 0.34, "falling", "linear", [0, 75, 140, 210], 0.04, "darkorange"),
+    new Voice(sounds[5], SCALES.CHROMATIC, 1, 0.1, "rising", "periodic", [0, 60, 120, 180, 240, 300], 0.04, "green"),
   ];
 
   // Record

@@ -40,7 +40,7 @@ function pos_neg(n) {
   return n * (random(1) > 0.5 ? 1 : -1);
 }
 function get_speed() {
-  let crawl = pos_neg(random(0, 1));
+  let crawl = pos_neg(random(0.1, 1));
   let stroll = pos_neg(random(1, 3));
   let walk = pos_neg(random(3, 5));
   let run = pos_neg(random(8, 10));
