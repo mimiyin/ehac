@@ -36,20 +36,14 @@ function draw() {
     rectMode(CORNER);
     rect(0, 0, diag, 10);
   }
-
-
-}
-
-function mousePressed() {
-  by = mouseY;
 }
 
 function keyPressed() {
-  switch (keyCode) {
-    case RETURN || ENTER:
+  switch (key) {
+    case 't':
       tick = !tick;
       break;
-    case SHIFT:
+    case 'b':
       block = !block;
       break;
   }
