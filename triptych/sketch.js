@@ -47,12 +47,12 @@ function get_speed() {
   let vanish = pos_neg(100);
 
   let r = random(1);
-  if(r > 0.9) return crawl;
-  else if(r > 0.6) return stroll;
-  else if(r > 0.3) return walk;
-  else if(r > 0.05) return run;
-  else if(r > 0) return vanish;
-  
+  if (r > 0.9) return crawl;
+  else if (r > 0.6) return stroll;
+  else if (r > 0.3) return walk;
+  else if (r > 0.05) return run;
+  else if (r > 0) return vanish;
+
 
   //return random(splow, sphigh) * (random(1) < 0.5 ? -1 : 1);
 }
@@ -79,7 +79,7 @@ function draw() {
     }
   }
 
-  if(debug) {
+  if (debug) {
     textAlign(RIGHT, BOTTOM);
     textSize(24);
     fill('red');
@@ -88,7 +88,7 @@ function draw() {
 }
 
 function keyPressed() {
-  switch(keyCode) {
+  switch (keyCode) {
     case SHIFT:
       debug = !debug;
       break;
@@ -97,7 +97,7 @@ function keyPressed() {
       break;
     case 32:
       go = !go;
-      if(go) loop();
+      if (go) loop();
       else noLoop();
       break;
     case RIGHT_ARROW:

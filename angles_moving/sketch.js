@@ -1,12 +1,16 @@
+//URLParams
+let urlParams = new URLSearchParams(window.location.search);
+
 // SETTINGS
+let fade = parseInt(urlParams.get('fade')) || 0;
+let drift = parseInt(urlParams.get('drift')) || 0;
+let swing = parseInt(urlParams.get('swing')) || 0;
+
 // Period in seconds
-const PERIOD = 2; // <-- HOW LONG BETWEEN SWINGS
+const PERIOD = parseInt(urlParams.get('period')) || 10; // <-- HOW LONG BETWEEN SWINGS
 
 // Position of 2 people
 let movers = {}
-
-// Swing mode
-let swing = true;
 
 // Flip of divison?
 let flip = true;
@@ -37,7 +41,7 @@ let pangle = 0;
 let _angle = 0;
 let a_dir = 1;
 let a_off = 0;
-let a_speed = 0.00025; // <-- SPEED OF DRIFT
+let a_speed = 0.0005; // <-- SPEED OF DRIFT
 
 // Refresh rate 
 let rr = 60 * PERIOD;
@@ -51,7 +55,7 @@ let aspeed = 1;
 let adir = 1;
 
 // Debug
-let debug = false;
+let debug = true;
 
 // Calc real angle difference
 function diff(a, pa) {
@@ -163,17 +167,18 @@ function draw() {
 
 
   // Calculate the average angle
-  if (diff(angle, _angle) > 0.1) _angle += a_dir * abs(angle - _angle) * 0.2;
+
+  if (swing && diff(angle, _angle) > 0.1) _angle += a_dir * abs(angle - _angle) * 0.2;
   //console.log(nfs(pangle, 0, 2), 'to ' + nfs(angle, 0, 2), 'now ' + nfs(_angle, 0, 2), 'dir ' + a_dir);
   // Wrap in both angles
   if (_angle < 0) _angle = TWO_PI;
   _angle %= TWO_PI;
-  a_off += a_speed;
+  a_off += drift ? a_speed : 0;
 
   // Draw the background
-  background(flip ? 255 : 0);
-  if(swing) background(0);
-
+  background(0);
+  if(fade) background(flip ? 255 : 0);
+  
   // Rotate the canvas to that angle
   // to draw the dividing rectangle
   fill(flip ? 0 : 255, a - amax);
@@ -202,8 +207,6 @@ function keyPressed() {
     case 'p':
       toggle_pozyx();
       break;
-    case 's':
-      swing = !swing;
   }
 
   switch (keyCode) {

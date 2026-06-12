@@ -1,7 +1,15 @@
+
+
+//URLParams
+let urlParams = new URLSearchParams(window.location.search);
+
+// SETTINGS
+let tick = parseInt(urlParams.get('tick')) || 0;
+let block = parseInt(urlParams.get('block')) || 0;
+let period = parseFloat(urlParams.get('period')) || 180;
+
 let a = 0;
 let diag;
-let tick = true;
-let block = false;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -13,9 +21,9 @@ function draw() {
   background(0);
   // move the clock
   if (tick) {
-    if (frameCount % 60 == 1) a += TWO_PI / 100;
+    if (frameCount % 60 == 1) a += TWO_PI / (60 * period);
   }
-  else a += TWO_PI / 10000;
+  else a += TWO_PI / (60 * period);
 
   translate(width / 2, height / 2);
   rotate(a);
