@@ -1,9 +1,9 @@
 name,container,path,version,length
-ocean,tox,scenes/ocean.tox,,273
+ocean,tox,scenes/noise.tox,,273
 gusts,browser,angles_moving/?swing=1&drift=0&fade=0&period=10,,153
 swing,browser,angles_moving/?swing=1&drift=0&fade=0&period=2,,88
 clock,browser,clock/?tick=0&block=1,,10
-noise,tox,scenes/noise.tox,,10
+noise,tox,scenes/ocean.tox,,10
 wind,browser,clock/?tick=1&block=0&period=1,,
 mozart,browser,angles_icebergs,,10
 triptych,browser,triptych,,10
