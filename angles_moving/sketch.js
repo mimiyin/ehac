@@ -5,6 +5,7 @@ let urlParams = new URLSearchParams(window.location.search);
 let fade = parseInt(urlParams.get('fade')) || 0;
 let drift = parseInt(urlParams.get('drift')) || 0;
 let swing = parseInt(urlParams.get('swing')) || 0;
+let reload = parseInt(urlParams.get('reload')) || 0;
 
 // Period in seconds
 const PERIOD = parseInt(urlParams.get('period')) || 10; // <-- HOW LONG BETWEEN SWINGS
@@ -200,6 +201,16 @@ function draw() {
   // Draw the people
   if(debug) draw_movers(movers);
 
+  if(reload > 0) {
+    let time = millis() / 1000;
+    if(time >= reload) go();
+  }
+
+}
+
+function go() {
+  window.location.replace(
+  "http://127.0.0.1:8001/clock/?tick=0&block=1",);
 }
 
 function keyPressed() {
