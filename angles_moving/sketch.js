@@ -55,7 +55,7 @@ let aspeed = 1;
 let adir = 1;
 
 // Debug
-let debug = true;
+let debug = false;
 
 // Calc real angle difference
 function diff(a, pa) {
