@@ -51,7 +51,7 @@ function calc_period() {
   avg_d /= ds.length;
   
   // period is in second
-  return map(avg_d, 0, diag, 10, 1)
+  return map(avg_d, 0, diag, 60, 0.5)
 }
 
 function draw() {
