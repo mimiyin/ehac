@@ -1,8 +1,9 @@
 // SETTINGS
 let urlParams = new URLSearchParams(window.location.search);
-let tick = parseInt(urlParams.get('tick')) || 0;
 let live = parseFloat(urlParams.get('live')) || 0;
 let period = parseFloat(urlParams.get('period')) || 10;
+let hand = parseFloat(urlParams.get('hand')) || 0;
+let tick = parseInt(urlParams.get('tick')) || 0;
 
 let debug = false;
 
@@ -33,7 +34,7 @@ function setup() {
   noCursor();
 }
 
-function calc() {
+function calc_period() {
   // Calculate the mid-point between 2 points
   // Store this frame's midpoint
   ds.push(distance(movers));
@@ -50,33 +51,32 @@ function calc() {
   avg_d /= ds.length;
   
   // period is in second
-  return map(avg_d, 0, diag, 180, 10)
+  return map(avg_d, 0, diag, 10, 1)
 }
 
 function draw() {
 
   // Only proceed if we have A and B
   if (!(movers.A && movers.B)) return;
-  if(live) period = calc();
+  if(live) period = calc_period();
 
   if (tick) {
-    if (frameCount % 60 == 1) a += TWO_PI / (60 * period);
+    if (frameCount % 60 == 1) advance();
   }
-  else a += TWO_PI / (60 * period);
+  else advance();
 
   /////////// DRAWING //////////////////
   background(0);
   push();
   translate(width / 2, height / 2);
-  let v1 = calc_vert(a);
-  let v2 = calc_vert(a + (TWO_PI * 0.25));  
-  let v3 = calc_vert(a + (TWO_PI * 0.63));
-
-  triangle(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
+  if(hand) draw_hand();
+  else draw_tri();
   pop();
 
   if(debug) draw_movers(movers);
 }
+
+
 
 function mouseMoved() {
   movers = reposition(movers);
@@ -84,6 +84,24 @@ function mouseMoved() {
 
 function keyPressed() {
   if(key == 'd') debug = !debug;
+}
+
+function advance() {
+  a += TWO_PI / (60 * period)
+}
+
+function draw_tri() {
+  let v1 = calc_vert(a);
+  let v2 = calc_vert(a + (TWO_PI * 0.25));  
+  let v3 = calc_vert(a + (TWO_PI * 0.63));
+
+  triangle(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
+}
+
+function draw_hand() {
+  rectMode(CORNER);
+  rotate(a);
+  rect(0, 0, diag, 10);
 }
 
 // Find point on the edge
