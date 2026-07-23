@@ -224,6 +224,9 @@ function keyPressed() {
     case DELETE:
       debug = !debug;
       break;
+    case ENTER:
+      go();
+      break;
   }
 }
 
