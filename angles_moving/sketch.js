@@ -210,7 +210,7 @@ function draw() {
 
 function go() {
   window.location.replace(
-  "http://127.0.0.1:8001/clock/?tick=0&block=1",);
+  "http://127.0.0.1:8001/clock/?tick=0&block=1&live=1",);
 }
 
 function keyPressed() {
@@ -218,13 +218,10 @@ function keyPressed() {
     case 'p':
       toggle_pozyx();
       break;
-  }
-
-  switch (keyCode) {
-    case DELETE:
+   case 'd':
       debug = !debug;
       break;
-    case ENTER:
+    case 'g':
       go();
       break;
   }
