@@ -8,7 +8,7 @@ let tick = parseInt(urlParams.get('tick')) || 0;
 let debug = false;
 
 // TIMING
-const AVG_PERIOD = 5;
+const AVG_PERIOD = 10;
 const REFRESH_PERIOD = 10;
 let a = 0;
 let diag;
@@ -44,14 +44,16 @@ function calc_period() {
 
   // Calculate average midpoint over time
   let avg_d = 0;
-  
+
   for (let d of ds) {
     avg_d += d;
   }
   avg_d /= ds.length;
+  avg_d = max(avg_d, 1);
   
   // period is in second
-  return map(avg_d, 0, diag, 60, 0.5)
+  let dim = diag/avg_d;
+  return constrain(map(dim, 1.5, 30, 0, 360), 0.1, 360);
 }
 
 function draw() {
@@ -73,10 +75,17 @@ function draw() {
   else draw_tri();
   pop();
 
-  if(debug) draw_movers(movers);
+  if(debug) {
+    push();
+    draw_movers(movers);
+    textAlign(CENTER);
+    textSize(64);
+    fill('black');
+    textSize(128);
+    text(nfs(period, 0, 2), width/2, height/2);
+    pop();
+  }
 }
-
-
 
 function mouseMoved() {
   movers = reposition(movers);
