@@ -124,7 +124,7 @@ function calc_vert(a) {
   let dy = (height / 2) / abs(y_comp);
   
   // The shorter distance determines the boundary hit
-  let r = min(dx, dy);
+  let r = min(dx, dy) - 10;
   
   return { x: x_comp * r, y : y_comp * r };
 }
