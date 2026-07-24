@@ -1,0 +1,174 @@
+# global operators
+timer = op('timer')
+scenes = op('scene_list_headerless')
+stage = op('stage')
+
+def fifo(state):
+    # fadeout
+	op('timer_fifo').par.initialize.pulse()
+	op('timer_fifo').par.start.pulse()
+	op('fifo').par.index = state
+	return
+
+def get_scene():
+	return int(op('scene')['scene'])
+
+def get_container(scene):
+	return scenes[scene, 1].val
+
+def get_path(scene):
+	return scenes[scene, 2].val
+
+def get_end(scene):
+	return int(scenes[scene, 4].val)
+
+def get_loop(scene):
+	return int(scenes[scene, 5].val)
+
+# timer callback
+# start/stop callback
+def set_scene(_scene):
+	scene = get_scene()
+	if _scene is not scene:
+		op('select_scene').par.Value0 = _scene
+	return
+
+def set_container(scene):
+	# get the container: tox or browser	
+	container = get_container(scene)
+	
+	# get and set paths to files
+	path = get_path(scene)
+
+	if container == 'tox':
+		# Update the container
+		loader = op('tox')
+		loader.par.externaltox = path
+		loader.par.reinitnet.pulse()
+	elif container == 'browser':
+		op('opts_browser')['path', 1] = path
+	return
+
+def set_stage(scene):
+	scene = get_scene()
+	container = get_container(scene)
+	stage_idx = lambda container: 0 if 'tox' else 1
+	if container == 'tox':
+		stage.par.index = 0
+	else:
+		stage.par.index = 1
+	return
+
+def cue_audio(scene):
+	op('audio').par.index = scene
+	op('cue_audio').par.value0 = 0 # don't play yet
+	op('cue_audio').par.value1 = get_loop(scene)
+	return
+
+def select_scene(scene):
+	print("STARTING AT", scene)
+		
+	# black out
+	op('stage').par.index = 2
+	
+	# set media <-- need to swap out tox earlier, otherwise creates race condition with init click
+	set_container(scene)
+	set_stage(scene)
+
+	# cue scene
+	op('cue_scene').par.initialize.pulse();
+	op('cue_scene').par.start.pulse();
+
+	# cue audio
+	cue_audio(scene)
+
+	return
+
+def start_scene():
+
+	scene = get_scene()
+	
+	# click init button
+	op('init').click()
+
+	# play audio
+	op('cue_audio').par.value0 = 1
+
+	# start timer for scene
+	if get_end(scene):
+		print('ENDING', scene)
+		stop_timer(init = True, audio = 1)
+	else:
+		timer.goTo(segment = scene)
+		start_timer(init = False)
+
+	# fade in
+	fifo(1)
+
+	# print confirmation message
+	print(f"Now playing row {scene}, {op('select_scene').par.Value0}")
+
+	return
+
+# val --> 1 and 0
+# clicking init button calls this
+def init_scene(val):
+	# click init
+	op('opts')['init', 1] = val
+	op('cue_audio').par.value3 = 0
+	op('cue_audio').par.value2 = val
+	return
+
+def start_timer(init):
+	print('STARTING SCENE TIMER')
+	if init:
+		timer.par.initialize.pulse()
+	timer.par.play = 1
+	return
+
+def stop_timer(init, audio = 0):
+	if init:
+		timer.par.initialize.pulse()
+	timer.par.play = 0
+	op('cue_audio').par.value0 = audio
+	return
+
+def start():
+	scene = get_scene()
+	select_scene(scene)
+	set_stage(scene)
+	op('/').time.play = True
+	return
+
+def resume():
+	scene = get_scene()
+	set_stage(scene)
+	op('/').time.play = True
+	return
+
+def stop():
+	# black out
+	op('stage').par.index = 2
+	op('/').time.play = False
+	return
+
+def calc_fraction(cp):
+	scene_len = op('scene_len')[0]
+	len_to_scene = op('len_to_scene')[0] or 0
+	total_len = op('total_len')[0]
+	fraction_to_scene = len_to_scene / total_len
+	fraction_in_scene = (cp * scene_len) / total_len
+	return fraction_to_scene + fraction_in_scene
+
+
+def cue_scene(cuepoint):
+	fraction = calc_fraction(cuepoint)
+	print("FRACTION", fraction)
+	timer.goTo(fraction = fraction)
+	op('cue_audio').par.value3 = cuepoint
+	op('pulse_audio').click()
+	return
+
+def pulse_audio(val):
+	op('cue_audio').par.value2 = val
+	return
