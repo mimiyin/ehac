@@ -5,7 +5,7 @@ let period = parseFloat(urlParams.get('period')) || 10;
 let hand = parseFloat(urlParams.get('hand')) || 0;
 let tick = parseInt(urlParams.get('tick')) || 0;
 
-let debug = false;
+let debug = true;
 
 // TIMING
 const AVG_PERIOD = 10;
@@ -22,6 +22,10 @@ let ts = 60 * AVG_PERIOD;
 let movers = {}
 // Average distances
 let ds = [];
+// Invert mapping
+let invert = false;
+let invert_fc = 60 * 180; // <-- seconds
+let revert_fc = 60 * 240;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -53,15 +57,27 @@ function calc_period() {
   
   // period is in second
   let dim = diag/avg_d;
-  return constrain(map(dim, 1.5, 30, 0, 360), 0.1, 360);
+  if(invert) return map_period(dim, 360, 0);
+  else return map_period(dim, 0, 360);
+}
+
+function map_period(val, mini, maxi) {
+  return constrain(map(val, 1.5, 30, mini, maxi), 0.1, 360);
 }
 
 function draw() {
 
   // Only proceed if we have A and B
   if (!(movers.A && movers.B)) return;
-  if(live) period = calc_period();
+  if(live) {
+    // Invert mapping automatically
+    if(frameCount == invert_fc || frameCount == revert_fc) invert = !invert;
+    period = calc_period();
+    console.log(period);
+  }
 
+
+  // Update
   if (tick) {
     if (frameCount % 60 == 1) advance();
   }
@@ -92,7 +108,14 @@ function mouseMoved() {
 }
 
 function keyPressed() {
-  if(key == 'd') debug = !debug;
+  switch(key) {
+    case 'd':
+      debug = !debug;
+      break;
+    case 'i':
+      invert = !invert;
+      break;
+  }    
 }
 
 function advance() {
@@ -103,7 +126,6 @@ function draw_tri() {
   let v1 = calc_vert(a);
   let v2 = calc_vert(a + (TWO_PI * 0.25));  
   let v3 = calc_vert(a + (TWO_PI * 0.63));
-
   triangle(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
 }
 
