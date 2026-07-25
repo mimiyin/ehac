@@ -1,3 +1,5 @@
+from threading import Timer
+
 # global operators
 timer = op('timer')
 scenes = op('scene_list_headerless')
@@ -70,6 +72,7 @@ def cue_audio(scene = get_scene()):
 	op('audio').par.index = scene
 	op('cue_audio').par.value0 = 0 # don't play yet
 	op('cue_audio').par.value1 = get_loop(scene)
+	op('cue_audio').par.value3 = 0
 	return
 
 def select_scene(scene):
@@ -91,15 +94,23 @@ def select_scene(scene):
 
 	return
 
+def click_init():
+	init_scene(1)
+	op('timer_init').par.initialize.pulse()
+	op('timer_init').par.start.pulse()
+	return
+
 def start_scene():
 
 	scene = get_scene()
 
 	# set media <-- need to swap out tox earlier, otherwise creates race condition with init click
 	set_stage()
-	
+
 	# click init button
-	op('init').click()
+	#op('init').click()
+	click_init()
+	print('INITING!!!!!')
 
 	# play audio
 	op('cue_audio').par.value0 = 1
@@ -122,10 +133,9 @@ def start_scene():
 
 # val --> 1 and 0
 # clicking init button calls this
-def init_scene(val):
+def init_scene(val = 0):
 	# click init
 	op('opts')['init', 1] = val
-	op('cue_audio').par.value3 = 0
 	op('cue_audio').par.value2 = val
 	return
 
