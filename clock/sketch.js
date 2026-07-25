@@ -27,8 +27,8 @@ let ps = [];
 
 // Invert mapping
 let invert = false;
-let invert_fc = 30 * 10//180; // <-- seconds
-let revert_fc = 30 * 20;//240;
+let invert_fc = 30 * 180; // <-- seconds
+let revert_fc = 30 * 240;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
