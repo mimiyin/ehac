@@ -8,8 +8,8 @@ let tick = parseInt(urlParams.get('tick')) || 0;
 let debug = true;
 
 // TIMING
-const AVG_PERIOD = 20;
-const REFRESH_PERIOD = 20;
+const AVG_PERIOD = 10;
+const REFRESH_PERIOD = 10;
 let a = 0;
 let diag;
 
@@ -27,8 +27,8 @@ let ps = [];
 
 // Invert mapping
 let invert = false;
-let invert_fc = 30 * 180; // <-- seconds
-let revert_fc = 30 * 240;
+let invert_fc = 30 * 60; // <-- seconds
+let revert_fc = 30 * 120;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -54,7 +54,7 @@ function calc_period() {
   
   // period is in second
   let dim = diag/avg_d; //avg_d;
-  let p = invert ? map_period(dim, 360, 0) : map_period(dim, 0, 360);
+  let p = invert ? map_period(dim, 5, 0) : map_period(dim, 0, 360);
 
   // Store periods
   ps.push(p);
