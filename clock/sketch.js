@@ -8,15 +8,15 @@ let tick = parseInt(urlParams.get('tick')) || 0;
 let debug = true;
 
 // TIMING
-const AVG_PERIOD = 10;
-const REFRESH_PERIOD = 10;
+const AVG_PERIOD = 20;
+const REFRESH_PERIOD = 20;
 let a = 0;
 let diag;
 
 // Refresh rate 
-let rr = 60 * REFRESH_PERIOD;
+let rr = 30 * REFRESH_PERIOD;
 // Smoothing over 5s
-let ts = 60 * AVG_PERIOD;
+let ts = 30 * AVG_PERIOD;
 
 // Position of 2 people
 let movers = {}
@@ -27,8 +27,8 @@ let ps = [];
 
 // Invert mapping
 let invert = false;
-let invert_fc = 60 * 180; // <-- seconds
-let revert_fc = 60 * 240;
+let invert_fc = 30 * 10//180; // <-- seconds
+let revert_fc = 30 * 20;//240;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -114,8 +114,11 @@ function draw() {
     textSize(64);
     fill('black');
     textSize(128);
-    text(nfs(period, 0, 2), width/2, height/2);
+    text(round(millis()/1000, 0, 2) + 's ' + round(frameCount, 0, 2) + 'f ' + nfs(period, 0, 2), width/2, height/2);
     pop();
+
+    // Show triangle is inverted
+    fill(invert ? 'hotpink' : 'white');
   }
 }
 
