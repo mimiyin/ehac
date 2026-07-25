@@ -22,6 +22,9 @@ let ts = 60 * AVG_PERIOD;
 let movers = {}
 // Average distances
 let ds = [];
+// Average periods
+let ps = [];
+
 // Invert mapping
 let invert = false;
 let invert_fc = 60 * 180; // <-- seconds
@@ -41,28 +44,41 @@ function setup() {
 function calc_period() {
   // Calculate the mid-point between 2 points
   // Store this frame's midpoint
-  ds.push(distance(movers));
+  let d = distance(movers);
+  ds.push(d);
 
   // Only ts frames of midpoints
   if (ds.length > ts) ds.shift();
-
-  // Calculate average midpoint over time
-  let avg_d = 0;
-
-  for (let d of ds) {
-    avg_d += d;
-  }
-  avg_d /= ds.length;
-  avg_d = max(avg_d, 1);
+  // Calculate avg distance
+  let avg_d = calc_avg(ds);
   
   // period is in second
-  let dim = diag/avg_d;
-  if(invert) return map_period(dim, 360, 0);
-  else return map_period(dim, 0, 360);
+  let dim = diag/avg_d; //avg_d;
+  let p = invert ? map_period(dim, 360, 0) : map_period(dim, 0, 360);
+
+  // Store periods
+  ps.push(p);
+   // Only ts frames of midpoints
+  if (ps.length > ts) ps.shift();
+  // Calculate avg period
+  let avg_p = calc_avg(ps);
+  return avg_p;
+  //if(invert) return map_period(dim, 360, 0);
+  //else return map_period(dim, 0, 360);
 }
 
 function map_period(val, mini, maxi) {
   return constrain(map(val, 1.5, 30, mini, maxi), 0.1, 360);
+}
+
+function calc_avg(values) {
+  // Calculate average midpoint over time
+  let avg = 0;
+  for (let value of values) {
+    avg += value;
+  }
+  avg /= values.length;
+  return max(avg, 1);
 }
 
 function draw() {
