@@ -4,8 +4,7 @@ let live = parseFloat(urlParams.get('live')) || 0;
 let period = parseFloat(urlParams.get('period')) || 10;
 let hand = parseFloat(urlParams.get('hand')) || 0;
 let tick = parseInt(urlParams.get('tick')) || 0;
-
-let debug = true;
+let debug = parseInt(urlParams.get('debug')) || 0;
 
 // TIMING
 const AVG_PERIOD = 10;

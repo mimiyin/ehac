@@ -9,3 +9,4 @@ mozart,browser,angles_icebergs,342,0,0
 circle,browser,clock/?tick=0&live=1,78,1,0
 triptych,browser,triptych,119,1,1
 flood,browser,flood,140,1,1
+bow,browser,clock/?tick=0&live=1&debug=1,78,1,1
