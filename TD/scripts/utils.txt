@@ -13,16 +13,16 @@ def fifo(state):
 def get_scene():
 	return int(op('scene')['scene'])
 
-def get_container(scene):
+def get_container(scene = get_scene()):
 	return scenes[scene, 1].val
 
-def get_path(scene):
+def get_path(scene = get_scene()):
 	return scenes[scene, 2].val
 
-def get_end(scene):
+def get_end(scene = get_scene()):
 	return int(scenes[scene, 4].val)
 
-def get_loop(scene):
+def get_loop(scene = get_scene()):
 	return int(scenes[scene, 5].val)
 
 # timer callback
@@ -33,7 +33,7 @@ def set_scene(_scene):
 		op('select_scene').par.Value0 = _scene
 	return
 
-def set_container(scene):
+def set_container(scene = get_scene()):
 	# get the container: tox or browser	
 	container = get_container(scene)
 	
@@ -47,11 +47,18 @@ def set_container(scene):
 		loader.par.reinitnet.pulse()
 	elif container == 'browser':
 		op('opts_browser')['path', 1] = path
-	return
 
-def set_stage(scene):
+	return container
+
+def set_stage(scene = get_scene(), curtain = False):
+	# black out
+	if curtain:
+		op('stage').par.index = 2
+		return
+
 	scene = get_scene()
-	container = get_container(scene)
+	container = set_container(scene)
+
 	stage_idx = lambda container: 0 if 'tox' else 1
 	if container == 'tox':
 		stage.par.index = 0
@@ -59,7 +66,7 @@ def set_stage(scene):
 		stage.par.index = 1
 	return
 
-def cue_audio(scene):
+def cue_audio(scene = get_scene()):
 	op('audio').par.index = scene
 	op('cue_audio').par.value0 = 0 # don't play yet
 	op('cue_audio').par.value1 = get_loop(scene)
@@ -69,24 +76,27 @@ def select_scene(scene):
 	print("STARTING AT", scene)
 		
 	# black out
-	op('stage').par.index = 2
+	set_stage(curtain = True)
 	
-	# set media <-- need to swap out tox earlier, otherwise creates race condition with init click
-	set_container(scene)
-	set_stage(scene)
+	if scene == 1:
+		# set media <-- need to swap out tox earlier, otherwise creates race condition with init click
+		set_stage
 
 	# cue scene
 	op('cue_scene').par.initialize.pulse();
 	op('cue_scene').par.start.pulse();
 
 	# cue audio
-	cue_audio(scene)
+	cue_audio()
 
 	return
 
 def start_scene():
 
 	scene = get_scene()
+
+	# set media <-- need to swap out tox earlier, otherwise creates race condition with init click
+	set_stage()
 	
 	# click init button
 	op('init').click()
@@ -95,7 +105,7 @@ def start_scene():
 	op('cue_audio').par.value0 = 1
 
 	# start timer for scene
-	if get_end(scene):
+	if get_end():
 		print('ENDING', scene)
 		stop_timer(init = True, audio = 1)
 	else:
@@ -133,22 +143,21 @@ def stop_timer(init, audio = 0):
 	op('cue_audio').par.value0 = audio
 	return
 
-def start():
+def restart():
 	scene = get_scene()
 	select_scene(scene)
-	set_stage(scene)
 	op('/').time.play = True
 	return
 
 def resume():
 	scene = get_scene()
-	set_stage(scene)
+	set_stage()
 	op('/').time.play = True
 	return
 
 def stop():
 	# black out
-	op('stage').par.index = 2
+	set_stage(curtain = True)
 	op('/').time.play = False
 	return
 
@@ -163,7 +172,6 @@ def calc_fraction(cp):
 
 def cue_scene(cuepoint):
 	fraction = calc_fraction(cuepoint)
-	print("FRACTION", fraction)
 	timer.goTo(fraction = fraction)
 	op('cue_audio').par.value3 = cuepoint
 	op('pulse_audio').click()
