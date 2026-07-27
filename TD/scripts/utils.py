@@ -80,10 +80,6 @@ def select_scene(scene):
 		
 	# black out
 	set_stage(curtain = True)
-	
-	if scene == 1:
-		# set media <-- need to swap out tox earlier, otherwise creates race condition with init click
-		set_stage()
 
 	# cue scene
 	op('cue_scene').par.initialize.pulse()
