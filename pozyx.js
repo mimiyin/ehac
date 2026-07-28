@@ -20,8 +20,8 @@ let tags2MoversLookup = {
   10002039: 'A',
   10002042: 'B',
 }
-const XMULT = .375;
-const YMULT = .375;
+const XMULT = .25; //.375;
+const YMULT = .25; //.375;
 const X_OFF = 1250;
 const Y_OFF = -100;
 
