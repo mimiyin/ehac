@@ -31,7 +31,7 @@ let revert_fc = 30 * 120;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  diag = sqrt(sq(width) + sq(height));
+  diag = sqrt(sq(REAL_WIDTH) + sq(height));
 
   movers = init_movers();
   pozyx();
@@ -101,7 +101,7 @@ function draw() {
   /////////// DRAWING //////////////////
   background(0);
   push();
-  translate(width / 2, height / 2);
+  translate(REAL_WIDTH / 2, height / 2);
   if(hand) draw_hand();
   else draw_tri();
   pop();
@@ -113,7 +113,7 @@ function draw() {
     textSize(64);
     fill('black');
     textSize(128);
-    text(round(millis()/1000, 0, 2) + 's ' + round(frameCount, 0, 2) + 'f ' + nfs(period, 0, 2), width/2, height/2);
+    text(round(millis()/1000, 0, 2) + 's ' + round(frameCount, 0, 2) + 'f ' + nfs(period, 0, 2), REAL_WIDTH/2, height/2);
     pop();
 
     // Show triangle is inverted
@@ -130,7 +130,7 @@ function keyPressed() {
     case 'd':
       debug = !debug;
       break;
-    case 'i':
+    case 'v':
       invert = !invert;
       break;
   }    
@@ -148,9 +148,12 @@ function draw_tri() {
 }
 
 function draw_hand() {
-  rectMode(CORNER);
-  rotate(a);
-  rect(0, 0, diag, 10);
+  let v1 = calc_vert(a);
+  push();
+  strokeWeight(10);
+  stroke(255);
+  line(0, 0, v1.x, v1.y);
+  pop();
 }
 
 // Find point on the edge
@@ -159,7 +162,7 @@ function calc_vert(a) {
   let y_comp = sin(a);
   
   // Distance to touching left-right sides
-  let dx = (width / 2) / abs(x_comp);
+  let dx = (REAL_WIDTH / 2) / abs(x_comp);
   // Distance to touching top-down sides
   let dy = (height / 2) / abs(y_comp);
   

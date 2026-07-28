@@ -24,7 +24,7 @@ function setup() {
 function reset() {
   console.log("RESET");
   limit = height;
-  anchor = width;
+  anchor = REAL_WIDTH;
   a = low;
   b1 = limit * random(0.1, 0.5);
   b2 = limit - b1;
@@ -83,7 +83,7 @@ function draw() {
     textAlign(RIGHT, BOTTOM);
     textSize(24);
     fill('red');
-    text("b1: " + nfs(b1, 0, 2) + '(' + nfs(b1speed, 0, 2) + ')' + "\tb2: " + nfs(b2, 0, 2) + '(' + nfs(b2speed, 0, 2) + ')' + "\tLow: " + splow + "\tHigh: " + sphigh, width, height);
+    text("b1: " + nfs(b1, 0, 2) + '(' + nfs(b1speed, 0, 2) + ')' + "\tb2: " + nfs(b2, 0, 2) + '(' + nfs(b2speed, 0, 2) + ')' + "\tLow: " + splow + "\tHigh: " + sphigh, REAL_WIDTH, height);
   }
 }
 

@@ -56,11 +56,11 @@ function drift() {
   let dir = { h: random([-1, 1]), v: random([-1, 1]) };
 
   // Going left or right?
-  h[dir.h] = width * random(SPEEDS.M, SPEEDS.F) * dir.h;
+  h[dir.h] = REAL_WIDTH * random(SPEEDS.M, SPEEDS.F) * dir.h;
   h[-dir.h] = h[dir.h] * 0.25;
 
   // Going up or down?
-  v[dir.v] = width * random(SPEEDS.M, SPEEDS.F) * dir.v;
+  v[dir.v] = REAL_WIDTH * random(SPEEDS.M, SPEEDS.F) * dir.v;
   v[-dir.v] = v[dir.v] * 0.25;
 
   return { l: h[-1], r: h[1], t: v[-1], b: v[1] };
@@ -116,6 +116,10 @@ function draw() {
       text(m, mover.x, mover.y);
     }
   }
+
+  // Black out right side
+  fill('black');
+  rect(REAL_WIDTH, 0, width-REAL_WIDTH, height);
 }
 
 function keyPressed() {
@@ -186,7 +190,7 @@ class Area {
       fill('red');
       ellipse(x, y, 15, 15);
     }
-    return x < - M || x > width + M || y < - M || y > height + M;
+    return x < - M || x > REAL_WIDTH + M || y < - M || y > height + M;
   }
 
   off() {

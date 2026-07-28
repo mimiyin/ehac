@@ -44,19 +44,19 @@ function draw() {
   }
 
   let f = counter % (TURN_INTERVAL * 4);
-  if (f < TURN_INTERVAL * 1) rect(0, 0, width / 2, height);
-  else if (f < TURN_INTERVAL * 2) rect(0, 0, width, height / 2);
-  else if (f < TURN_INTERVAL * 3) rect(width / 2, 0, width / 2, height);
-  else rect(0, height / 2, width, height / 2);
+  if (f < TURN_INTERVAL * 1) rect(0, 0, REAL_WIDTH / 2, height);
+  else if (f < TURN_INTERVAL * 2) rect(0, 0, REAL_WIDTH, height / 2);
+  else if (f < TURN_INTERVAL * 3) rect(REAL_WIDTH / 2, 0, REAL_WIDTH / 2, height);
+  else rect(0, height / 2, REAL_WIDTH, height / 2);
   if(auto) counter++;
 
   // Show video
   if(cell) {
     push();
     imageMode(CENTER);
-    translate(width/2, height/2);
+    translate(REAL_WIDTH/2, height/2);
     rotate(PI/2);
-    image(video, 0, 0, height, width);
+    image(video, 0, 0, height, REAL_WIDTH);
     pop();
   }
 }

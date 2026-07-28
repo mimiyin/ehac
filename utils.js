@@ -1,3 +1,6 @@
+// Real width
+const REAL_WIDTH = 1980;
+
 // Weighted random
 function distribute(ranges) {
   let values = [];

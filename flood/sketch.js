@@ -6,7 +6,7 @@ let a = 0;
 let go = true;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(2950, windowHeight);
   noCursor();
   rh = height / rows;
   noStroke();
@@ -27,7 +27,7 @@ function draw() {
     if (_a < 0) _a = 64;
     stroke(255, round(_a));
     //stroke(255);
-    line(-10, y, width + 10, y);
+    line(-10, y, REAL_WIDTH + 10, y);
   }
 }
 

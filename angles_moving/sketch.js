@@ -83,7 +83,7 @@ function setup() {
   movers = init_movers();
 
   // Calculate diagonal of screen
-  diag = sqrt(sq(width) + sq(height)) * 0.67;
+  diag = sqrt(sq(REAL_WIDTH) + sq(height)) * 0.67;
 
   // Calculate aspeed
   aspeed = amax / rr;
@@ -184,7 +184,7 @@ function draw() {
   // to draw the dividing rectangle
   fill(flip ? 0 : 255, a - amax);
   if(swing) fill(0);
-  rect(0, 0, width, height);
+  rect(0, 0, REAL_WIDTH, height);
   push();
   translate(amid.x, amid.y);
   rotate(_angle + a_off);
@@ -205,6 +205,10 @@ function draw() {
     let time = millis() / 1000;
     if(time >= reload) go();
   }
+
+  // Black out right side
+  fill('black');
+  rect(REAL_WIDTH, 0, width-REAL_WIDTH, height);
 
 }
 
