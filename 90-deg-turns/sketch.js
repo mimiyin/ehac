@@ -18,20 +18,19 @@ let cell = false;
 const TURN_INTERVAL = parseInt(FPS * 60 * 0.5); // 10 minutes
 let counter = 0;
 
-// SOUND
-let sound;
+// VIDEO
 let video;
+let v_w2h;
 
 function preload() {
-    //sound = loadSound('copter.wav');
-    video = createVideo('cell.mp4');
+    video = createVideo('media/7-24-26.mov');
     video.hide();
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  v_w2h = video.width / video.height;
   noCursor();
-  //sound.loop();
 }
 
 function draw() {
@@ -56,15 +55,19 @@ function draw() {
     imageMode(CENTER);
     translate(REAL_WIDTH/2, height/2);
     rotate(PI/2);
-    image(video, 0, 0, height, REAL_WIDTH);
+    image(video, 0, 0, width * v_w2h, height);
     pop();
   }
 }
 
 function keyPressed() {
   switch (key) {
-    case 'c':
+    case 'v':
       cell = !cell;
+      if(cell) {
+        video.loop();
+        console.log(cell ? 'cell' : 'no cell');
+      }
       break;
     case 'f':
       flash = !flash;
