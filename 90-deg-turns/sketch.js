@@ -23,7 +23,7 @@ let video;
 let v_w2h;
 
 function preload() {
-    video = createVideo('media/7-24-26.mov');
+    video = createVideo('media/cell.mov');
     video.hide();
 }
 
@@ -51,6 +51,7 @@ function draw() {
 
   // Show video
   if(cell) {
+    background('blue');
     push();
     imageMode(CENTER);
     translate(REAL_WIDTH/2, height/2);
@@ -84,7 +85,7 @@ function keyPressed() {
   }
 
   switch (keyCode) {
-    case ENTER:
+    case SHIFT:
       counter += TURN_INTERVAL;
       break;
     case LEFT_ARROW:
@@ -101,6 +102,5 @@ function keyPressed() {
       break;
   }
 }
-
 
 
