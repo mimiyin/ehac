@@ -52,6 +52,7 @@ function draw() {
   // Show video
   if(cell) {
     background('blue');
+    background('blue');
     push();
     imageMode(CENTER);
     translate(REAL_WIDTH/2, height/2);
@@ -85,6 +86,7 @@ function keyPressed() {
   }
 
   switch (keyCode) {
+    case SHIFT:
     case SHIFT:
       counter += TURN_INTERVAL;
       break;
