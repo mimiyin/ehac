@@ -1,38 +1,47 @@
 // Set speeds
 const SLOW = 0.0001;
 const MEDIUM = 0.001;
-const FAST = 0.05;
+const FAST = 0.01;
 
 // Set layout ratios
+const SLIVER = 0.475;
 const TRIPTYCH = 0.34;
-const SLIVER = 0.49;
 const DESERT = 0.1;
 
 // Narrative
 const PROGRESSIONS = {
-  FILE: {
-    PROCESS: [SLOW, SLOW],
-    FOLLOW: [MEDIUM, MEDIUM],
-    VANISH: [FAST, FAST],
-    OVERTAKE: [MEDIUM, SLOW],
-    WIPEOUT: [FAST, MEDIUM],
-    LEAVE: [SLOW, MEDIUM],
-    DUST: [SLOW, FAST]
+  FOLLOW: {
+    SS: [SLOW, SLOW],
+    MM: [MEDIUM, MEDIUM],
+    FF: [FAST, FAST],
+    SM: [SLOW, MEDIUM],
+    MS: [MEDIUM, SLOW],
+    MF: [MEDIUM, FAST],
+    FM: [FAST, MEDIUM],
+    SF: [SLOW, FAST],
+    FS: [FAST, SLOW],
   },
-  EXPAND: {
-    PROCESS: [-SLOW, SLOW],
-    DIVERGE: [-MEDIUM, MEDIUM],
-    VANISH: [-FAST, FAST],
-    DEPART: [-SLOW, MEDIUM],
-    RUNAWAY: [-MEDIUM, FAST],
-    DESERT: [-SLOW, FAST]
+  DIVERGE: {
+    SS: [-SLOW, SLOW],
+    MM: [-MEDIUM, MEDIUM],
+    FF: [-FAST, FAST],
+    SM: [-SLOW, MEDIUM],
+    MS: [-MEDIUM, SLOW],
+    MF: [-MEDIUM, FAST],
+    FM: [-FAST, MEDIUM],
+    SF: [-SLOW, FAST],
+    FS: [-FAST, SLOW],
   },
-  SHRINK: {
-    PROCESS: [SLOW, -SLOW],
-    APPROACH: [MEDIUM, -MEDIUM],
-    VANISH: [FAST, -FAST],
-    ACCOST: [SLOW, -MEDIUM],
-    RUSH: [SLOW, -FAST],
+  CONVERGE: {
+    SS: [SLOW, -SLOW],
+    MM: [MEDIUM, -MEDIUM],
+    FF: [FAST, -FAST],
+    SM: [SLOW, -MEDIUM],
+    MS: [MEDIUM, -SLOW],
+    MF: [MEDIUM, -FAST],
+    FM: [FAST, -MEDIUM],
+    SF: [SLOW, -FAST],
+    FS: [FAST, -SLOW],
   }
 }
 
@@ -40,16 +49,23 @@ const PROGRESSIONS = {
 const SCORE = {
   1: {
     layout: SLIVER,
-    progression: PROGRESSIONS.FILE.FOLLOW,
+    progression: PROGRESSIONS.CONVERGE.FF,
     dir : 1,
     fade_time: 3,
     hold_time: 1
   },
   2: {
     layout: TRIPTYCH,
-    progression: PROGRESSIONS.SHRINK.APPROACH,
+    progression: PROGRESSIONS.DIVERGE.MM,
+    dir : 1,
+    fade_time: 10,
+    hold_time: 3
+  },
+  3: {
+    layout: DESERT,
+    progression: PROGRESSIONS.FOLLOW.MS,
     dir : 1,
     fade_time: 5,
-    hold_time: 3
+    hold_time: 10
   }
 }
